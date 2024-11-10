@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+    
+        <file alias="simucalc-128.png">../src/icons/simucalc-128.png</file>
+        <file alias="circ.png">../src/icons/circ.png</file>
+        <file alias="undo.png">../src/icons/undo.png</file>
+        <file alias="redo.png">../src/icons/redo.png</file>
+    </qresource>
+</RCC>
+
