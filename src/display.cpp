@@ -103,14 +103,14 @@ void Display::analizeText( QString text ) // Create a list of operations and val
                 bool ok = false;
                 if( m_type == Uint || m_base == 16 )
                 {
-                    uint64_t v = val.toULongLong( &ok, m_base );
+                    uint64_t v64 = val.toULongLong( &ok, m_base );
                     if( !ok ) break;
-                    if( m_bits < 64 && v >= pow( 2, m_bits ) ) break;
+                    if( m_bits < 64 && v64 >= m_bits*m_bits ) break;
                 }else{
-                    int64_t v = val.toLongLong( &ok, m_base );
+                    int64_t v64 = val.toLongLong( &ok, m_base );
                     if( !ok ) break;
-                    int64_t max = pow( 2, m_bits )/2;
-                    if( m_bits < 64 && (v >= max || v < -max) ) break;
+                    int64_t max = m_bits*m_bits/2;
+                    if( m_bits < 64 && (v64 >= max || v64 < -max) ) break;
                 }
             }
             m_valStr += key;
@@ -258,7 +258,7 @@ QString Display::getValStr( uint64_t val ) // Convert uint64 value to String sho
             }
         }
     }else{
-        if( m_base == 10 ) // Decimal
+        if( m_base == 10 )                // Decimal
         {
             if( m_type == Float32 )
             {
@@ -275,27 +275,11 @@ QString Display::getValStr( uint64_t val ) // Convert uint64 value to String sho
         }
         else if( m_base == 8 )            // Octal
         {
-            if( m_type == Float32 )
-            {
-                //uint32_t uval = val;
-                valStr = QString::number( val, 8 );
-            }
-            else if( m_type == Float64 )
-            {
-                valStr = QString::number( val, 8 );
-            }
+            valStr = QString::number( val, 8 );
         }
         else if( m_base == 16 )            // Hexadecimal
         {
-            if( m_type == Float32 )
-            {
-                //uint32_t uval = val;
-                valStr = QString::number( val, 16 );
-            }
-            else if( m_type == Float64 )
-            {
-                valStr = QString::number( val, 16 );
-            }
+            valStr = QString::number( val, 16 );
         }
     }
     if( m_base == 16 ) valStr = valStr.toUpper();

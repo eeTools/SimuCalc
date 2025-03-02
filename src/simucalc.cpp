@@ -51,6 +51,7 @@ SimuCalc::SimuCalc( MainWindow* mainW )
     for( int byte=0; byte<8; ++byte )
     {
         QGroupBox* group = this->findChild<QGroupBox*>( "byte_"+QString::number(byte) );
+        QHBoxLayout* bitLayout = (QHBoxLayout*)group->layout();
         m_bytes.append( group );
 
         for( int bit=0; bit<8; ++bit )
@@ -63,9 +64,8 @@ SimuCalc::SimuCalc( MainWindow* mainW )
             bitBut->setText("0");
             m_bits.addButton( bitBut, i );
             i++;
-            QHBoxLayout* l = (QHBoxLayout*)group->layout();
-            l->insertWidget( 0, bitBut );
-            //group->layout()->addWidget( bitBut );
+
+            bitLayout->insertWidget( 0, bitBut );
         }
     }
     connect( &m_bits, SIGNAL( buttonToggled( QAbstractButton*, bool ) ),
@@ -270,7 +270,9 @@ void SimuCalc::c()
 }
 
 void SimuCalc::keyPressed( int index )
-{ m_activeDisp->insert( QString::number( index, 16 ) ); }
+{
+    m_activeDisp->insert( QString::number( index, 16 ) );
+}
 
 void SimuCalc::opPressed( int index )
 {
@@ -364,6 +366,7 @@ void SimuCalc::on_bitsBox_currentIndexChanged( int index ) // 8, 16, 32, 64
 void SimuCalc::textChanged()
 {
     if( m_resultStr.isEmpty() ) return;
+
     m_undoStack.append( m_resultStr );
     m_resultStr.clear();
 }
